@@ -1,0 +1,30 @@
+@baseURL = http://localhost:8081/produtos
+
+### Listar todos os produtos
+GET {{baseURL}}
+
+###BUSCAR UM PRODUTO PELO ID
+GET {{baseURL}}/2
+
+### Criar um produto
+POST {{baseURL}}
+Content-Type: application/json
+
+{
+  "nome": "Monitor ULtrawide",
+  "descricao": "Monitor 29 polegadas, 100Hz, resolução 2560x1080",
+  "preco": 1299.90
+}
+
+### Atualizar um produto
+PUT {{baseURL}}/2
+Content-Type: application/json
+
+{
+  "nome": "Monitor ULtrawide",
+  "descricao": "Monitor 29 polegadas, 100Hz, resolução 2560x1080",
+  "preco": 1199.90
+}
+
+### Deletar um produto
+DELETE {{baseURL}}/1
