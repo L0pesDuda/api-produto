@@ -4,26 +4,26 @@
 GET {{baseURL}}
 
 ###BUSCAR UM PRODUTO PELO ID
-GET {{baseURL}}/2
+GET {{baseURL}}/999
 
 ### Criar um produto
 POST {{baseURL}}
 Content-Type: application/json
 
 {
-  "nome": "Monitor ULtrawide",
-  "descricao": "Monitor 29 polegadas, 100Hz, resolução 2560x1080",
-  "preco": 1299.90
+  "nome": "Produto qualquer",
+  "descricao": "Notebook Dell  15'17, 16GB RAM, RAM 1TB",
+  "preco": 0
 }
 
 ### Atualizar um produto
-PUT {{baseURL}}/2
+PUT {{baseURL}}/3
 Content-Type: application/json
 
 {
-  "nome": "Monitor ULtrawide",
-  "descricao": "Monitor 29 polegadas, 100Hz, resolução 2560x1080",
-  "preco": 1199.90
+  "nome": "Notebook Dell",
+  "descricao": "Notebook Dell  15'17, 16GB RAM, RAM 1TB",
+  "preco": 7999.90
 }
 
 ### Deletar um produto
