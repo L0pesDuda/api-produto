@@ -1,30 +1,37 @@
-@baseURL = http://localhost:8081/produtos
+@baseURL = http://localhost:8081
 
-### Listar todos os produtos
-GET {{baseURL}}
-
-###BUSCAR UM PRODUTO PELO ID
-GET {{baseURL}}/999
-
-### Criar um produto
-POST {{baseURL}}
+### Criar Categoria
+POST {{baseURL}}/categorias
 Content-Type: application/json
 
 {
-  "nome": "Produto qualquer",
-  "descricao": "Notebook Dell  15'17, 16GB RAM, RAM 1TB",
-  "preco": 0
+    "nome": "Automóveis"
 }
 
-### Atualizar um produto
-PUT {{baseURL}}/3
+### Listar categorias
+GET {{baseURL}}/categorias
+
+### Criar produtos vinculados à categoria
+POST {{baseURL}}/produtos
 Content-Type: application/json
 
 {
-  "nome": "Notebook Dell",
-  "descricao": "Notebook Dell  15'17, 16GB RAM, RAM 1TB",
-  "preco": 7999.90
+    "nome": "Cera Automativa",
+    "descricao": "Cera para lataria de veículos",
+    "preco": 20.0,
+    "categoria": {"id": 2}
+
 }
 
-### Deletar um produto
-DELETE {{baseURL}}/1
+### Buscar produtos por categoria
+GET {{baseURL}}/produtos/categoria/2
+
+### Buscar produtos por faixa de preço
+GET {{baseURL}}/produtos/faixa-preco?min=0&max=50
+
+###Apagar produtos
+DELETE {{baseURL}}/produtos/3
+
+
+
+

@@ -19,21 +19,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(CategoriaNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(CategoriaNotFoundException ex) {
+        ErrorResponse erro = new ErrorResponse(404, ex.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
 
-        Map<String,String> erros = new HashMap<>();
-       
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex){
+
+        Map<String, String> erros = new HashMap<>();
+
         ex.getBindingResult()
         .getFieldErrors()
         .forEach(erro -> erros.put(
-        erro.getField(),
-        erro.getDefaultMessage()));
+            erro.getField(),
+            erro.getDefaultMessage()));
 
-        return ResponseEntity
-        .status(HttpStatus.BAD_REQUEST)
-        .body(erros);
-            
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(erros);
     }
 
 }
