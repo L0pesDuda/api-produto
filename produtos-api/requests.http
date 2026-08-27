@@ -1,37 +1,11 @@
 @baseURL = http://localhost:8081
 
-### Criar Categoria
-POST {{baseURL}}/categorias
+### Fazer login
+POST {{baseURL}}/login
 Content-Type: application/json
 
 {
-    "nome": "Automóveis"
+    "username": "duda",
+    "password": "senha123"
 }
-
-### Listar categorias
-GET {{baseURL}}/categorias
-
-### Criar produtos vinculados à categoria
-POST {{baseURL}}/produtos
-Content-Type: application/json
-
-{
-    "nome": "Cera Automativa",
-    "descricao": "Cera para lataria de veículos",
-    "preco": 20.0,
-    "categoria": {"id": 2}
-
-}
-
-### Buscar produtos por categoria
-GET {{baseURL}}/produtos/categoria/2
-
-### Buscar produtos por faixa de preço
-GET {{baseURL}}/produtos/faixa-preco?min=0&max=50
-
-###Apagar produtos
-DELETE {{baseURL}}/produtos/3
-
-
-
 
