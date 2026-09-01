@@ -2,7 +2,6 @@ package br.com.senai.produtosapi.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +40,9 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+
+    private String imagem;
+    
 
     public Long getId() {
         return id;
@@ -90,11 +92,20 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    @PrePersist
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+     @PrePersist
     private void prePersist() {
         if (dataCadastro == null) {
             dataCadastro = LocalDate.now();
         }
-    }
 
+    }
 }

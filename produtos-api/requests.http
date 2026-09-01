@@ -1,5 +1,7 @@
 @baseURL = http://localhost:8081
 
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdWRhIiwiaWF0IjoxNzg4MjE5ODIxLCJleHAiOjE3ODgyMjM0MjF9.oy9pS8Lq6OGDAGZ3xkmIVWQ0BJ-P9iWIIIJd8asBF-o
+
 ### Fazer login
 POST {{baseURL}}/login
 Content-Type: application/json
@@ -9,3 +11,35 @@ Content-Type: application/json
     "password": "senha123"
 }
 
+### Listar categorias
+GET {{baseURL}}/categorias
+Authorization: Bearer {{token}}
+
+### Criar produto bicicleta vinculado à categoria
+POST {{baseURL}}/produtos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nome": "Bicicleta speed",
+    "descricao": "Bicicleta speed aro 700, 21 marchas.",
+    "preco": 25499.90,
+    "categoria": { "id": 2 }
+}
+
+### Upload de imagem do produto
+# Importante: o campo do arquivo deve ser "arquivo" conforme o backend
+POST {{baseURL}}/produtos/1/imagem
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="arquivo"; filename="bicicleta-speed.jpg"
+Content-Type: image/jpeg
+
+< ./test-files/bicicleta-speed.jpg
+------boundary--
+
+### Download de imagem do produto
+GET {{baseURL}}/produtos/1/imagem
+Authorization: Bearer {{token}}
