@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,13 +71,14 @@ public class ProdutoController {
 
     // POST /produtos -> Cria um produto
 
-    @Operation(summary = "Cadastrar um novo produto")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Produto cadastrado com sucesso"),
+        @Operation(summary = "Cadastrar um novo produto")
+        @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Produto cadastrado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
-    })
-    @PostMapping
-    public Produto salvar(
+        })
+        @ResponseStatus(HttpStatus.CREATED)
+        @PostMapping
+        public Produto salvar(
             @Parameter(description = "Dados do produto a ser cadastrado") @Valid @RequestBody Produto produto) {
         return produtoService.salvar(produto);
     }
@@ -157,17 +160,26 @@ public class ProdutoController {
                 @GetMapping("/{id}/imagem")
                 public ResponseEntity<Resource> baixarImagem(
                       @Parameter(description = "Id do produto") @PathVariable Long id) throws IOException {
-                    Produto produto = produtoService.buscarPorId(id);
-                    Path caminho = Paths.get("uploads").resolve(produto.getImagem());
+                                Produto produto = produtoService.buscarPorId(id);
 
-                    Resource recurso = new UrlResource(caminho.toUri());
-                    MediaType tipoConteudo = MediaTypeFactory.getMediaType(recurso)
-                    .orElse(MediaType.APPLICATION_OCTET_STREAM);
+                                if (produto.getImagem() == null || produto.getImagem().isBlank()) {
+                                    throw new br.com.senai.produtosapi.exception.ImagemNotFoundException(id);
+                                }
 
-                   return ResponseEntity.ok()
-                   .contentType(tipoConteudo)
-                   .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + recurso.getFilename
-                   () + "\"")
-                   .body(recurso);      
+                                Path caminho = Paths.get("uploads").resolve(produto.getImagem());
+
+                                if (!java.nio.file.Files.exists(caminho)) {
+                                    throw new br.com.senai.produtosapi.exception.ImagemNotFoundException(id);
+                                }
+
+                                Resource recurso = new UrlResource(caminho.toUri());
+                                MediaType tipoConteudo = MediaTypeFactory.getMediaType(recurso)
+                                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+                               return ResponseEntity.ok()
+                               .contentType(tipoConteudo)
+                               .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + recurso.getFilename
+                               () + "\"")
+                               .body(recurso);
                 }
 }
